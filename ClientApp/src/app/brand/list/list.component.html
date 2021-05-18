@@ -1,0 +1,43 @@
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Brands</h3>
+    </div>
+  </div>
+
+  <br />
+  <table class="table table-bordered table-sm text-center">
+    <tr>
+      <th>Name</th>
+      <th>Action</th>
+    </tr>
+    <tr *ngIf="brands?.length == 0"><td>No data</td></tr>
+    <tr *ngFor="let brand of brands">
+      <td>{{ brand.name }}</td>
+      <td>
+        <button type="button" (click)="deleteBrand(brand.id)" class="btn btn-danger btn-sm mr-1">Delete</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Create Brand</h3>
+    </div>
+  </div>
+  <br />
+  <form [formGroup]="createForm" (ngSubmit)="onSubmit(createForm)">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input formControlName="name"
+             id="name"
+             type="text"
+             class="form-control" />
+    </div>
+    <button class="btn btn-primary" type="submit" [disabled]="!createForm.valid">Create</button>
+  </form>
+</div>

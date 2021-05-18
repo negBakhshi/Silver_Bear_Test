@@ -1,0 +1,63 @@
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Units</h3>
+    </div>
+  </div>
+  <br />
+
+  <table class="table table-bordered table-sm text-center">
+    <tr>
+      <th>Type</th>
+      <th>Value</th>
+      <th>Action</th>
+    </tr>
+    <tr *ngIf="units?.length == 0"><td>No data</td></tr>
+    <tr *ngFor="let unit of units">
+      <td>{{ unit.type }}</td>
+      <td>{{ unit.value }}</td>
+      <td>
+        <button type="button" (click)="deleteUnit(unit.id)" class="btn btn-danger btn-sm mr-1">Delete</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Create Unit</h3>
+    </div>
+  </div>
+  <br />
+  <form [formGroup]="createForm" (ngSubmit)="onSubmit(createForm)">
+
+    <div class="form-group">
+      <label for="type">Type:</label>
+      <select formControlName="type"
+              placeholder="Unit Type"
+              id="type"
+              class="form-control"
+              (change)="changeType($event.target.value)">
+
+        <option *ngFor="let type of uTypes">{{ type }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="series">Value:</label>
+      <select formControlName="value"
+              id="value"
+              type="text"
+              class="form-control">
+
+        <option *ngFor="let vls of values">{{ vls }}</option>
+
+
+      </select>
+    </div>
+
+    <button class="btn btn-primary" type="submit" routerLink="/unit" [disabled]="!createForm.valid">Create</button>
+  </form>
+</div>

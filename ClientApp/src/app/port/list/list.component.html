@@ -1,0 +1,58 @@
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Ports</h3>
+    </div>
+  </div>
+  <br />
+
+  <table class="table table-bordered table-sm text-center">
+    <tr>
+      <th>Quantity</th>
+      <th>USB Type</th>
+      <th>Action</th>
+    </tr>
+    <tr *ngIf="ports?.length == 0"><td>No data</td></tr>
+    <tr *ngFor="let port of ports">
+      <td>{{ port.quantity }}</td>
+      <td>{{ port.unit?.value }}</td>
+      <td>
+        <button type="button" (click)="deletePort(port.id)" class="btn btn-danger btn-sm mr-1">Delete</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Create Port</h3>
+    </div>
+  </div>
+  <br />
+  <form [formGroup]="createForm" (ngSubmit)="onSubmit(createForm)">
+
+    <div class="form-group">
+      <label for="quantity">Quantity:</label>
+      <input formControlName="quantity"
+             id="quantity"
+             type="number"
+             class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <label for="unitId">USB Type:</label>
+      <select formControlName="unitId"
+              id="unitId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let u of units" [ngValue]="u.id">{{ u.value }}</option>
+      </select>
+    </div>
+
+
+    <button class="btn btn-primary" type="submit" routerLink="/port" [disabled]="!createForm.valid">Create</button>
+  </form>
+</div>

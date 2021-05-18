@@ -1,0 +1,61 @@
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Graphic Card Models</h3>
+    </div>
+  </div>
+  <br />
+
+  <table class="table table-bordered table-sm text-center">
+    <thead>
+      <tr>
+        <th>Brand</th>
+        <th>Name</th>
+        <th>Action</th>
+      </tr>
+      <tr *ngIf="gcModels?.length == 0"><td>No data</td></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let gcm of gcModels">
+        <td>{{ gcm.brand?.name }}</td>
+        <td>{{ gcm.name  }}</td>
+        <td>
+          <button type="button" (click)="deleteGraphicCardModel(gcm.id)" class="btn btn-danger btn-sm mr-1">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Create Graphic Card Model</h3>
+    </div>
+  </div>
+  <br />
+  <form [formGroup]="creategcmForm" (ngSubmit)="onSubmit(creategcmForm)">
+
+    <div class="form-group">
+      <label for="brandId">Brand:</label>
+      <select formControlName="brandId"
+              id="brandId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let brand of brands" [ngValue]="brand.id">{{ brand.name }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input formControlName="name"
+             id="name"
+             type="text"
+             class="form-control" />
+    </div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="!creategcmForm.valid">Create</button>
+  </form>
+</div>

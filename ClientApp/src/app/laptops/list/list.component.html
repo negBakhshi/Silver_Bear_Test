@@ -1,0 +1,229 @@
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Laptops</h3>
+    </div>
+    <div class="col text-right">
+      <button type="button" (click)="showCreateDiv()" class="btn btn-success btn-sm">Create New</button>
+    </div>
+  </div>
+  <br />
+  <table class="table table-bordered table-sm text-center">
+    <tr>
+      <th>Memory</th>
+      <th>Storage</th>
+      <th>Port</th>
+      <th>Graphic Card</th>
+      <th>Power</th>
+      <th>Weight</th>
+      <th>CPU</th>
+      <th width="200px">Action</th>
+    </tr>
+    <tr *ngIf="laptops?.length == 0"><td>No data</td></tr>
+    <tr *ngFor="let laptop of laptops">
+      <td>{{ laptop.memory?.value + ' ' +laptop.memory?.unit?.value }}</td>
+      <td>{{ laptop.storage?.memory?.value + ' ' + laptop.storage?.memory?.unit?.value + ' ' +laptop.storage?.type  }}</td>
+      <td>{{ laptop.port?.quantity.toString() + ' ' + laptop.port?.unit?.value}}</td>
+      <td>{{ laptop.graphicCard?.model?.brand?.name + ' ' + laptop.graphicCard?.model?.name + ' ' + laptop.graphicCard?.series }}</td>
+      <td>{{ laptop.power.toString() + ' ' + laptop.powerUnit?.value  }}</td>
+      <td>{{ laptop.weight.toString()+ ' ' + laptop.weightUnit?.value }}</td>
+      <td>{{ laptop.cpu?.brand?.name + ' ' + laptop.cpu?.series }}</td>
+      <td class="text-right">
+        <button type="button" (click)="showEditDiv(laptop.id)" class="btn btn-primary btn-sm mr-1">Edit</button>
+        <button type="button" (click)="deleteLaptop(laptop.id)" class="btn btn-danger btn-sm mr-1">Delete</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="container" *ngIf="divCreate">
+  <br />
+  <br />
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Create Laptop</h3>
+    </div>
+  </div>
+  <br />
+  <form [formGroup]="createLaptopForm" (ngSubmit)="onSubmitC(createLaptopForm)">
+
+    <div class="form-group">
+      <label for="memoryId">Memory:</label>
+      <select formControlName="memoryId"
+              id="memoryId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let memory of memories" [ngValue]="memory.id">{{ memory.value + ' ' + memory.unit.value }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="storageId">Storage:</label>
+      <select formControlName="storageId"
+              id="storageId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let storage of storages" [ngValue]="storage.id">{{ storage.memory?.value + ' ' + storage.memory?.unit?.value + ' ' + storage.type }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="portId">Port:</label>
+      <select formControlName="portId"
+              id="portId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let port of ports" [ngValue]="port.id">{{ port.quantity + ' ' + port.unit?.value }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="graphicCardId">Graphic Card:</label>
+      <select formControlName="graphicCardId"
+              id="graphicCardId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let gc of gCards" [ngValue]="gc.id">{{ gc.model?.brand?.name + ' ' + gc.model?.name + ' ' + gc.series }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6" style="display: inline-block;">
+      <label for="weight">Weight:</label>
+      <input formControlName="weight"
+             id="weight"
+             type="number"
+             class="form-control" />
+      <label for="power">Power:</label>
+      <input formControlName="power"
+             id="power"
+             type="number"
+             class="form-control" />
+    </div>
+    <div class="form-group col-md-6" style="display:inline-block;">
+
+      <label for="weightUnitId">Weight Unit:</label>
+      <select formControlName="weightUnitId"
+              id="weightUnitId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let wu of wunits" [ngValue]="wu.id">{{ wu.value }}</option>
+      </select>
+      <label for="powerUnitId">Power Unit:</label>
+      <select formControlName="powerUnitId"
+              id="powerUnitId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let pu of punits" [ngValue]="pu.id">{{ pu.value }}</option>
+      </select>
+
+    </div>
+
+    <div class="form-group">
+      <label for="cpuId">CPU:</label>
+      <select formControlName="cpuId"
+              id="cpuId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let cpu of cpus" [ngValue]="cpu.id">{{ cpu.brand?.name + ' ' + cpu.series }}</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" type="submit" routerLink="/laptop" [disabled]="!createLaptopForm.valid">Create</button>
+  </form>
+</div>
+
+
+<div class="container" *ngIf="divEdit">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Update Laptop</h3>
+    </div>
+  </div>
+  <br />
+  <form [formGroup]="editLaptopForm" (ngSubmit)="onSubmitU(editLaptopForm)">
+    <div class="form-group">
+      <label for="memoryId">Memory:</label>
+      <select formControlName="memoryId"
+              id="memoryId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let memory of memories" [ngValue]="memory.id">{{ memory.value + ' ' + memory.unit.value }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="storageId">Storage:</label>
+      <select formControlName="storageId"
+              id="storageId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let storage of storages" [ngValue]="storage.id">{{ storage.memory?.value + ' ' + storage.memory?.unit?.value + ' ' + storage.type }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="portId">Port:</label>
+      <select formControlName="portId"
+              id="portId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let port of ports" [ngValue]="port.id">{{ port.quantity + ' ' + port.unit?.value }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="graphicCardId">Graphic Card:</label>
+      <select formControlName="graphicCardId"
+              id="graphicCardId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let gc of gCards" [ngValue]="gc.id">{{ gc.model?.brand?.name + ' ' + gc.model?.name + ' ' + gc.series }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6" style="display: inline-block;">
+      <label for="weight">Weight:</label>
+      <input formControlName="weight"
+             id="weight"
+             type="number"
+             class="form-control" />
+      <label for="power">Power:</label>
+      <input formControlName="power"
+             id="power"
+             type="number"
+             step=".01"
+             class="form-control" />
+    </div>
+    <div class="form-group col-md-6" style="display:inline-block;">
+
+      <label for="weightUnitId">Weight Unit:</label>
+      <select formControlName="weightUnitId"
+              id="weightUnitId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let wu of wunits" [ngValue]="wu.id">{{ wu.value }}</option>
+      </select>
+      <label for="powerUnitId">Power Unit:</label>
+      <select formControlName="powerUnitId"
+              id="powerUnitId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let pu of punits" [ngValue]="pu.id">{{ pu.value }}</option>
+      </select>
+
+    </div>
+
+    <div class="form-group">
+      <label for="cpuId">CPU:</label>
+      <select formControlName="cpuId"
+              id="cpuId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let cpu of cpus" [ngValue]="cpu.id">{{ cpu.brand?.name + ' ' + cpu.series }}</option>
+      </select>
+    </div>
+
+
+    <button class="btn btn-primary" type="submit" routerLink="/laptop" [disabled]="!editLaptopForm.valid">Update</button>
+  </form>
+</div>

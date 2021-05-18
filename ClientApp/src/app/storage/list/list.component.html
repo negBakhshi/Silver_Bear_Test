@@ -1,0 +1,61 @@
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Storages</h3>
+    </div>
+  </div>
+  <br />
+
+  <table class="table table-bordered table-sm text-center">
+    <thead>
+      <tr>
+        <th>Memory</th>
+        <th>Type</th>
+        <th>Action</th>
+      </tr>
+      <tr *ngIf="storages?.length == 0"> <td>No data</td></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let storage of storages">
+        <td>{{ storage.memory?.value + ' ' + storage.memory?.unit?.value }}</td>
+        <td>{{ storage.type  }}</td>
+        <td>
+          <button type="button" (click)="deleteStorage(storage.id)" class="btn btn-danger btn-sm mr-1">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Create Storage</h3>
+    </div>
+  </div>
+  <br />
+  <form [formGroup]="createForm" (ngSubmit)="onSubmit(createForm)">
+
+    <div class="form-group">
+      <label for="memoryId">Memory:</label>
+      <select formControlName="memoryId"
+              id="memoryId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let memory of memories" [ngValue]="memory.id">{{ memory.value + ' ' + memory.unit.value }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="type">Type:</label>
+      <input formControlName="type"
+             id="type"
+             type="text"
+             class="form-control" />
+    </div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="!createForm.valid">Create</button>
+  </form>
+</div>

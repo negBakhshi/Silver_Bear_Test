@@ -1,0 +1,56 @@
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Memories</h3>
+    </div>
+  </div>
+  <br />
+
+  <table class="table table-bordered table-sm text-center">
+    <tr>
+      <th>Value</th>
+      <th>Unit</th>
+      <th>Action</th>
+    </tr>
+    <tr *ngIf="memories?.length == 0"><td>No data</td></tr>
+    <tr *ngFor="let mem of memories">
+      <td>{{ mem.value }}</td>
+      <td>{{ mem.unit?.value }}</td>
+      <td>
+        <button type="button" (click)="deleteMemory(mem.id)" class="btn btn-danger btn-sm mr-1">Delete</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col">
+      <h3>Create Memory</h3>
+    </div>
+  </div>
+  <br />
+  <form [formGroup]="createForm" (ngSubmit)="onSubmit(createForm)">
+
+    <div class="form-group">
+      <label for="brandId">Memory Unit:</label>
+      <select formControlName="unitId"
+              id="unitId"
+              class="form-control">
+        <option value="default">- Select -</option>
+        <option *ngFor="let u of units" [ngValue]="u.id">{{ u.value }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="value">Value:</label>
+      <input formControlName="value"
+             id="value"
+             type="number"
+             class="form-control" />
+    </div>
+
+    <button class="btn btn-primary" type="submit" routerLink="/memory" [disabled]="!createForm.valid">Create</button>
+  </form>
+</div>
